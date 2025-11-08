@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BeautyConnect - Réservation de Coiffure à Domicile</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <i class="fas fa-scissors"></i>
+                <span>BeautyConnect</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="active">Accueil</a></li>
+                <li><a href="coiffeuses.html">Trouver une coiffeuse</a></li>
+                <li><a href="reservation.html">Réserver</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <div class="nav-toggle" id="navToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-overlay"></div>
+        <div class="container hero-content">
+            <h1>Trouvez Votre Coiffeuse Professionnelle</h1>
+            <p class="hero-subtitle">Des services de coiffure à domicile ou en salon, près de chez vous</p>
+            <div class="hero-buttons">
+                <a href="coiffeuses.html" class="btn btn-primary">
+                    <i class="fas fa-search"></i> Trouver une coiffeuse
+                </a>
+                <a href="reservation.html" class="btn btn-secondary">
+                    <i class="fas fa-calendar-alt"></i> Réserver maintenant
+                </a>
+            </div>
+            <div class="location-search">
+                <i class="fas fa-map-marker-alt"></i>
+                <input type="text" id="locationInput" placeholder="Entrez votre adresse ou ville...">
+                <button class="btn-location" id="geolocateBtn">
+                    <i class="fas fa-crosshairs"></i> Me géolocaliser
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Comment ça marche -->
+    <section class="how-it-works">
+        <div class="container">
+            <h2>Comment ça marche ?</h2>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-icon">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <h3>1. Recherchez</h3>
+                    <p>Trouvez des coiffeuses professionnelles près de vous grâce à la géolocalisation</p>
+                </div>
+                <div class="step">
+                    <div class="step-icon">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <h3>2. Réservez</h3>
+                    <p>Choisissez votre service, date et heure. À domicile ou en salon</p>
+                </div>
+                <div class="step">
+                    <div class="step-icon">
+                        <i class="fas fa-cut"></i>
+                    </div>
+                    <h3>3. Profitez</h3>
+                    <p>Bénéficiez d'un service professionnel de qualité où vous le souhaitez</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="services">
+        <div class="container">
+            <h2>Nos Services</h2>
+            <div class="services-grid">
+                <div class="service-card">
+                    <i class="fas fa-home"></i>
+                    <h3>Coiffure à Domicile</h3>
+                    <p>Votre coiffeuse vient directement chez vous avec tout le matériel nécessaire</p>
+                </div>
+                <div class="service-card">
+                    <i class="fas fa-store"></i>
+                    <h3>Rendez-vous en Salon</h3>
+                    <p>Prenez rendez-vous dans le salon de votre coiffeuse préférée</p>
+                </div>
+                <div class="service-card">
+                    <i class="fas fa-palette"></i>
+                    <h3>Multiples Styles</h3>
+                    <p>Tresses, locks, défrisage, tissage, coupes et bien plus encore</p>
+                </div>
+                <div class="service-card">
+                    <i class="fas fa-clock"></i>
+                    <h3>Disponibilité Flexible</h3>
+                    <p>Réservez selon vos horaires, même le weekend et en soirée</p>
+                </div>
+                <div class="service-card">
+                    <i class="fas fa-star"></i>
+                    <h3>Professionnelles Certifiées</h3>
+                    <p>Toutes nos coiffeuses sont qualifiées et expérimentées</p>
+                </div>
+                <div class="service-card">
+                    <i class="fas fa-euro-sign"></i>
+                    <h3>Tarifs Transparents</h3>
+                    <p>Prix affichés clairement, sans surprise à la fin de la prestation</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Coiffeuses Populaires -->
+    <section class="popular-stylists">
+        <div class="container">
+            <h2>Coiffeuses Populaires</h2>
+            <div class="stylists-grid" id="popularStylists">
+                <!-- Les coiffeuses seront chargées dynamiquement -->
+            </div>
+            <div class="text-center">
+                <a href="coiffeuses.html" class="btn btn-outline">Voir toutes les coiffeuses</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Témoignages -->
+    <section class="testimonials">
+        <div class="container">
+            <h2>Ce que disent nos clientes</h2>
+            <div class="testimonials-grid">
+                <div class="testimonial">
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p>"Service excellent ! Fatima est venue chez moi et a fait un travail magnifique. Mes tresses sont parfaites !"</p>
+                    <div class="client-info">
+                        <strong>Aïcha D.</strong>
+                        <span>Paris 18ème</span>
+                    </div>
+                </div>
+                <div class="testimonial">
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p>"Très pratique et professionnel. La réservation en ligne est super facile et les coiffeuses sont qualifiées."</p>
+                    <div class="client-info">
+                        <strong>Mariama S.</strong>
+                        <span>Lyon</span>
+                    </div>
+                </div>
+                <div class="testimonial">
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p>"J'adore ce service ! Je peux me faire coiffer sans bouger de chez moi. Un vrai gain de temps !"</p>
+                    <div class="client-info">
+                        <strong>Kadiatou B.</strong>
+                        <span>Marseille</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <h2>Contactez-nous</h2>
+            <div class="contact-content">
+                <div class="contact-info">
+                    <div class="info-item">
+                        <i class="fas fa-phone"></i>
+                        <div>
+                            <h4>Téléphone</h4>
+                            <p>+33 1 23 45 67 89</p>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-envelope"></i>
+                        <div>
+                            <h4>Email</h4>
+                            <p>contact@beautyconnect.fr</p>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-clock"></i>
+                        <div>
+                            <h4>Horaires</h4>
+                            <p>Lun - Dim : 8h00 - 22h00</p>
+                        </div>
+                    </div>
+                </div>
+                <form class="contact-form">
+                    <input type="text" placeholder="Votre nom" required>
+                    <input type="email" placeholder="Votre email" required>
+                    <textarea placeholder="Votre message" rows="5" required></textarea>
+                    <button type="submit" class="btn btn-primary">Envoyer</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3><i class="fas fa-scissors"></i> BeautyConnect</h3>
+                    <p>La plateforme de réservation de coiffure à domicile et en salon</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Liens Rapides</h4>
+                    <ul>
+                        <li><a href="index.html">Accueil</a></li>
+                        <li><a href="coiffeuses.html">Trouver une coiffeuse</a></li>
+                        <li><a href="reservation.html">Réserver</a></li>
+                        <li><a href="#services">Services</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Pour les Coiffeuses</h4>
+                    <ul>
+                        <li><a href="#">Devenir partenaire</a></li>
+                        <li><a href="#">Espace coiffeuse</a></li>
+                        <li><a href="#">Tarifs</a></li>
+                        <li><a href="#">FAQ</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="#">Centre d'aide</a></li>
+                        <li><a href="#">Conditions d'utilisation</a></li>
+                        <li><a href="#">Politique de confidentialité</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 BeautyConnect. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
