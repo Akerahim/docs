@@ -6,6 +6,8 @@
     <title>Trouver une Coiffeuse - BeautyConnect</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </head>
 <body>
     <!-- Navigation -->
@@ -103,16 +105,17 @@
         <div class="container">
             <div class="results-header">
                 <h2 id="resultsTitle">Coiffeuses disponibles</h2>
-                <span class="results-count" id="resultsCount">0 résultats</span>
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <button class="btn btn-outline" id="toggleMapBtn" onclick="toggleMap()">
+                        <i class="fas fa-map"></i> Afficher la carte
+                    </button>
+                    <span class="results-count" id="resultsCount">0 résultats</span>
+                </div>
             </div>
 
-            <!-- Map Preview (Optionnel) -->
+            <!-- Map Preview -->
             <div class="map-container" id="mapContainer" style="display: none;">
-                <div class="map-placeholder">
-                    <i class="fas fa-map-marked-alt"></i>
-                    <p>Carte des coiffeuses à proximité</p>
-                    <small>Activez la géolocalisation pour voir la carte</small>
-                </div>
+                <div id="map" style="width: 100%; height: 100%;"></div>
             </div>
 
             <!-- Stylists List -->

@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paiement Réussi - BeautyConnect</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .success-container {
+            max-width: 600px;
+            width: 100%;
+            background: white;
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            animation: slideInUp 0.5s ease;
+        }
+
+        .success-icon {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 2rem;
+            background: linear-gradient(135deg, #06d6a0, #04aa7d);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: pulse 2s infinite;
+        }
+
+        .success-icon i {
+            font-size: 3rem;
+            color: white;
+        }
+
+        .success-container h1 {
+            color: var(--dark-color);
+            margin-bottom: 1rem;
+        }
+
+        .success-message {
+            color: var(--text-light);
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+        }
+
+        .booking-details {
+            background: var(--light-color);
+            padding: 2rem;
+            border-radius: 15px;
+            margin: 2rem 0;
+            text-align: left;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+
+        .detail-label {
+            color: var(--text-light);
+        }
+
+        .detail-value {
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+
+        .confirmation-number {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin: 1rem 0;
+        }
+
+        .actions {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        @keyframes confetti {
+            0% { transform: translateY(-100vh) rotate(0deg); }
+            100% { transform: translateY(100vh) rotate(360deg); }
+        }
+
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: var(--primary-color);
+            animation: confetti 3s linear;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="success-container">
+        <div class="success-icon">
+            <i class="fas fa-check"></i>
+        </div>
+
+        <h1>Paiement réussi !</h1>
+        <p class="success-message">Votre rendez-vous a été confirmé et payé avec succès</p>
+
+        <div class="confirmation-number">
+            <i class="fas fa-ticket-alt"></i> BC-2024-061315
+        </div>
+
+        <div class="booking-details">
+            <h3 style="margin-bottom: 1rem; color: var(--dark-color);">
+                <i class="fas fa-info-circle"></i> Détails de la réservation
+            </h3>
+
+            <div class="detail-row">
+                <span class="detail-label">Coiffeuse</span>
+                <span class="detail-value">Fatima Diallo</span>
+            </div>
+
+            <div class="detail-row">
+                <span class="detail-label">Service</span>
+                <span class="detail-value">Box braids</span>
+            </div>
+
+            <div class="detail-row">
+                <span class="detail-label">Date & Heure</span>
+                <span class="detail-value">Lundi 15 juin 2024, 14:00</span>
+            </div>
+
+            <div class="detail-row">
+                <span class="detail-label">Lieu</span>
+                <span class="detail-value">À domicile</span>
+            </div>
+
+            <div class="detail-row">
+                <span class="detail-label">Durée estimée</span>
+                <span class="detail-value">3h00</span>
+            </div>
+
+            <div class="detail-row" style="margin-top: 1rem; padding-top: 1rem; border-top: 2px solid var(--border-color);">
+                <span class="detail-label">Montant payé</span>
+                <span class="detail-value" style="font-size: 1.3rem; color: var(--primary-color);">90€</span>
+            </div>
+        </div>
+
+        <div style="background: #d4edda; color: #155724; padding: 1rem; border-radius: 10px; margin: 1.5rem 0;">
+            <i class="fas fa-envelope"></i> Un email de confirmation a été envoyé à votre adresse
+        </div>
+
+        <div class="actions">
+            <button class="btn btn-primary btn-block" onclick="window.location.href='index.html'">
+                <i class="fas fa-home"></i> Retour à l'accueil
+            </button>
+            <button class="btn btn-outline btn-block" onclick="window.print()">
+                <i class="fas fa-print"></i> Imprimer la confirmation
+            </button>
+            <button class="btn btn-outline btn-block" onclick="downloadICS()">
+                <i class="fas fa-calendar-plus"></i> Ajouter au calendrier
+            </button>
+        </div>
+
+        <div style="margin-top: 2rem; padding-top: 2rem; border-top: 1px solid var(--border-color);">
+            <p style="color: var(--text-light); font-size: 0.9rem;">
+                Besoin d'aide ? Contactez-nous au <strong>+33 1 23 45 67 89</strong>
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Confetti animation
+        function createConfetti() {
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = Math.random() * 100 + '%';
+                    confetti.style.background = ['#ff006e', '#fb5607', '#ffbe0b', '#06d6a0', '#3a86ff'][Math.floor(Math.random() * 5)];
+                    confetti.style.animationDelay = Math.random() * 2 + 's';
+                    document.body.appendChild(confetti);
+
+                    setTimeout(() => confetti.remove(), 3000);
+                }, i * 50);
+            }
+        }
+
+        createConfetti();
+
+        function downloadICS() {
+            const icsContent = `BEGIN:VCALENDAR
+VERSION:2.0
+BEGIN:VEVENT
+SUMMARY:Rendez-vous BeautyConnect - Box braids
+DTSTART:20240615T140000
+DTEND:20240615T170000
+DESCRIPTION:Rendez-vous avec Fatima Diallo pour Box braids
+LOCATION:À domicile
+END:VEVENT
+END:VCALENDAR`;
+
+            const blob = new Blob([icsContent], { type: 'text/calendar' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'rendez-vous-beautyconnect.ics';
+            a.click();
+        }
+    </script>
+</body>
+</html>

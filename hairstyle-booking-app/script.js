@@ -4,6 +4,8 @@
 
 let userLocation = null;
 let selectedStylist = null;
+let map = null;
+let markers = [];
 
 // ========================================
 // Navigation Toggle (Mobile)
@@ -473,3 +475,96 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         }
     });
 });
+
+// ========================================
+// Interactive Map
+// ========================================
+
+function toggleMap() {
+    const mapContainer = document.getElementById('mapContainer');
+    const toggleBtn = document.getElementById('toggleMapBtn');
+
+    if (mapContainer.style.display === 'none') {
+        mapContainer.style.display = 'block';
+        toggleBtn.innerHTML = '<i class="fas fa-list"></i> Masquer la carte';
+
+        if (!map) {
+            initializeMap();
+        }
+    } else {
+        mapContainer.style.display = 'none';
+        toggleBtn.innerHTML = '<i class="fas fa-map"></i> Afficher la carte';
+    }
+}
+
+function initializeMap() {
+    if (typeof L === 'undefined') return;
+
+    const defaultCenter = [48.8566, 2.3522]; // Paris
+    const defaultZoom = 12;
+
+    map = L.map('map').setView(defaultCenter, defaultZoom);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors',
+        maxZoom: 19
+    }).addTo(map);
+
+    // Add stylists to map
+    if (typeof stylistsData !== 'undefined') {
+        addStylistsToMap(stylistsData);
+    }
+
+    // Add user location if available
+    if (userLocation) {
+        L.marker([userLocation.lat, userLocation.lng], {
+            icon: L.icon({
+                iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png',
+                shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png',
+                iconSize: [25, 41],
+                iconAnchor: [12, 41],
+                popupAnchor: [1, -34],
+                shadowSize: [41, 41]
+            })
+        }).addTo(map).bindPopup('Votre position');
+
+        map.setView([userLocation.lat, userLocation.lng], 13);
+    }
+}
+
+function addStylistsToMap(stylists) {
+    // Clear existing markers
+    markers.forEach(marker => marker.remove());
+    markers = [];
+
+    stylists.forEach(stylist => {
+        const marker = L.marker([stylist.location.lat, stylist.location.lng], {
+            icon: L.icon({
+                iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
+                shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png',
+                iconSize: [25, 41],
+                iconAnchor: [12, 41],
+                popupAnchor: [1, -34],
+                shadowSize: [41, 41]
+            })
+        }).addTo(map);
+
+        const popupContent = `
+            <div style="min-width: 200px;">
+                <h3 style="margin: 0 0 0.5rem 0;">${stylist.name}</h3>
+                <div style="display: flex; align-items: center; gap: 5px; margin-bottom: 0.5rem;">
+                    <i class="fas fa-star" style="color: #fbbf24;"></i>
+                    <span>${stylist.rating}</span>
+                </div>
+                <p style="margin: 0.5rem 0; color: #6b7280;">${stylist.specialties.slice(0, 2).join(', ')}</p>
+                <p style="margin: 0.5rem 0;"><strong>À partir de ${stylist.priceFrom}€</strong></p>
+                <button class="btn btn-primary btn-sm" onclick="bookStylist(${stylist.id})" style="width: 100%; margin-top: 0.5rem;">
+                    Réserver
+                </button>
+            </div>
+        `;
+
+        marker.bindPopup(popupContent);
+        markers.push(marker);
+    });
+}

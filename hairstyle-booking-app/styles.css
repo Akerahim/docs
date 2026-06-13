@@ -9,25 +9,93 @@
 }
 
 :root {
-    --primary-color: #d946ef;
-    --secondary-color: #8b5cf6;
-    --dark-color: #1f2937;
-    --light-color: #f9fafb;
-    --text-color: #374151;
-    --border-color: #e5e7eb;
-    --success-color: #10b981;
-    --warning-color: #f59e0b;
-    --danger-color: #ef4444;
-    --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.15);
-    --transition: all 0.3s ease;
+    --primary-color: #ff006e;
+    --primary-dark: #d6006d;
+    --secondary-color: #fb5607;
+    --accent-color: #ffbe0b;
+    --dark-color: #1a1a2e;
+    --dark-accent: #16213e;
+    --light-color: #f8f9fa;
+    --light-accent: #ffffff;
+    --text-color: #2d3748;
+    --text-light: #718096;
+    --border-color: #e2e8f0;
+    --success-color: #06d6a0;
+    --warning-color: #ffd23f;
+    --danger-color: #ef476f;
+    --info-color: #3a86ff;
+    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+    --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.12);
+    --shadow-xl: 0 25px 50px rgba(0, 0, 0, 0.2);
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-fast: all 0.15s ease;
+    --gradient-primary: linear-gradient(135deg, #ff006e 0%, #fb5607 100%);
+    --gradient-secondary: linear-gradient(135deg, #ffbe0b 0%, #fb5607 100%);
+    --gradient-dark: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    --border-radius: 12px;
+    --border-radius-lg: 20px;
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
     color: var(--text-color);
     line-height: 1.6;
-    background-color: #fff;
+    background: linear-gradient(to bottom, #ffffff 0%, #f8f9fa 100%);
+    overflow-x: hidden;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+@keyframes shimmer {
+    0% { background-position: -1000px 0; }
+    100% { background-position: 1000px 0; }
 }
 
 .container {
@@ -51,12 +119,15 @@ a {
    ======================================== */
 
 .navbar {
-    background: #fff;
-    box-shadow: var(--shadow);
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
     position: sticky;
     top: 0;
     z-index: 1000;
     padding: 1rem 0;
+    border-bottom: 1px solid rgba(255, 0, 110, 0.1);
+    animation: slideInUp 0.5s ease;
 }
 
 .navbar .container {
@@ -131,13 +202,34 @@ a {
 }
 
 .btn-primary {
-    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    background: var(--gradient-primary);
     color: #fff;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-primary::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.5s;
+}
+
+.btn-primary:hover::before {
+    left: 100%;
 }
 
 .btn-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-lg);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(255, 0, 110, 0.4);
+}
+
+.btn-primary:active {
+    transform: translateY(-1px);
 }
 
 .btn-secondary {
@@ -178,14 +270,25 @@ a {
 
 .hero {
     position: relative;
-    height: 600px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 650px;
+    background: var(--gradient-primary);
     display: flex;
     align-items: center;
     justify-content: center;
     color: #fff;
     text-align: center;
     overflow: hidden;
+}
+
+.hero::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    right: 0;
+    height: 100px;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 100"><path fill="%23ffffff" d="M0,50 Q360,0 720,50 T1440,50 L1440,100 L0,100 Z"></path></svg>') bottom center no-repeat;
+    background-size: cover;
 }
 
 .hero::before {
