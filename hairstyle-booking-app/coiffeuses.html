@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trouver une Coiffeuse - BeautyConnect</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <i class="fas fa-scissors"></i>
+                <span>BeautyConnect</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html">Accueil</a></li>
+                <li><a href="coiffeuses.html" class="active">Trouver une coiffeuse</a></li>
+                <li><a href="reservation.html">Réserver</a></li>
+                <li><a href="index.html#services">Services</a></li>
+                <li><a href="index.html#contact">Contact</a></li>
+            </ul>
+            <div class="nav-toggle" id="navToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="container">
+            <h1><i class="fas fa-search"></i> Trouver une Coiffeuse</h1>
+            <p>Découvrez des professionnelles qualifiées près de chez vous</p>
+        </div>
+    </div>
+
+    <!-- Search and Filter Section -->
+    <section class="search-filter">
+        <div class="container">
+            <div class="search-bar">
+                <div class="search-input-group">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <input type="text" id="searchLocation" placeholder="Ville, quartier, code postal...">
+                    <button class="btn-geolocation" id="useMyLocation">
+                        <i class="fas fa-crosshairs"></i> Ma position
+                    </button>
+                </div>
+                <button class="btn btn-primary" id="searchBtn">
+                    <i class="fas fa-search"></i> Rechercher
+                </button>
+            </div>
+
+            <div class="filters">
+                <div class="filter-group">
+                    <label><i class="fas fa-filter"></i> Filtres :</label>
+                    <select id="serviceFilter">
+                        <option value="">Tous les services</option>
+                        <option value="tresses">Tresses</option>
+                        <option value="locks">Locks</option>
+                        <option value="defrisage">Défrisage</option>
+                        <option value="tissage">Tissage</option>
+                        <option value="coupe">Coupe</option>
+                        <option value="coloration">Coloration</option>
+                        <option value="soin">Soins capillaires</option>
+                    </select>
+
+                    <select id="locationFilter">
+                        <option value="">Type de service</option>
+                        <option value="domicile">À domicile</option>
+                        <option value="salon">En salon</option>
+                        <option value="both">Les deux</option>
+                    </select>
+
+                    <select id="distanceFilter">
+                        <option value="5">Jusqu'à 5 km</option>
+                        <option value="10" selected>Jusqu'à 10 km</option>
+                        <option value="20">Jusqu'à 20 km</option>
+                        <option value="50">Jusqu'à 50 km</option>
+                    </select>
+
+                    <select id="sortFilter">
+                        <option value="distance">Trier par distance</option>
+                        <option value="rating">Trier par note</option>
+                        <option value="price">Trier par prix</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="active-location" id="activeLocation" style="display: none;">
+                <i class="fas fa-map-pin"></i>
+                <span id="currentLocationText">Localisation actuelle</span>
+                <span class="distance-badge" id="distanceBadge"></span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Results Section -->
+    <section class="results-section">
+        <div class="container">
+            <div class="results-header">
+                <h2 id="resultsTitle">Coiffeuses disponibles</h2>
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <button class="btn btn-outline" id="toggleMapBtn" onclick="toggleMap()">
+                        <i class="fas fa-map"></i> Afficher la carte
+                    </button>
+                    <span class="results-count" id="resultsCount">0 résultats</span>
+                </div>
+            </div>
+
+            <!-- Map Preview -->
+            <div class="map-container" id="mapContainer" style="display: none;">
+                <div id="map" style="width: 100%; height: 100%;"></div>
+            </div>
+
+            <!-- Stylists List -->
+            <div class="stylists-list" id="stylistsList">
+                <!-- Les coiffeuses seront chargées dynamiquement via JavaScript -->
+            </div>
+
+            <!-- Loading State -->
+            <div class="loading-state" id="loadingState" style="display: none;">
+                <i class="fas fa-spinner fa-spin"></i>
+                <p>Recherche de coiffeuses à proximité...</p>
+            </div>
+
+            <!-- No Results -->
+            <div class="no-results" id="noResults" style="display: none;">
+                <i class="fas fa-search"></i>
+                <h3>Aucune coiffeuse trouvée</h3>
+                <p>Essayez d'élargir votre zone de recherche ou de modifier vos filtres</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal pour les détails de la coiffeuse -->
+    <div class="modal" id="stylistModal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <div class="modal-body" id="modalBody">
+                <!-- Contenu chargé dynamiquement -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3><i class="fas fa-scissors"></i> BeautyConnect</h3>
+                    <p>La plateforme de réservation de coiffure à domicile et en salon</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Liens Rapides</h4>
+                    <ul>
+                        <li><a href="index.html">Accueil</a></li>
+                        <li><a href="coiffeuses.html">Trouver une coiffeuse</a></li>
+                        <li><a href="reservation.html">Réserver</a></li>
+                        <li><a href="index.html#services">Services</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Pour les Coiffeuses</h4>
+                    <ul>
+                        <li><a href="#">Devenir partenaire</a></li>
+                        <li><a href="#">Espace coiffeuse</a></li>
+                        <li><a href="#">Tarifs</a></li>
+                        <li><a href="#">FAQ</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="#">Centre d'aide</a></li>
+                        <li><a href="#">Conditions d'utilisation</a></li>
+                        <li><a href="#">Politique de confidentialité</a></li>
+                        <li><a href="index.html#contact">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 BeautyConnect. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script src="stylists-data.js"></script>
+</body>
+</html>

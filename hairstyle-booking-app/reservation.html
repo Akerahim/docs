@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Réserver un Rendez-vous - BeautyConnect</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <i class="fas fa-scissors"></i>
+                <span>BeautyConnect</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html">Accueil</a></li>
+                <li><a href="coiffeuses.html">Trouver une coiffeuse</a></li>
+                <li><a href="reservation.html" class="active">Réserver</a></li>
+                <li><a href="index.html#services">Services</a></li>
+                <li><a href="index.html#contact">Contact</a></li>
+            </ul>
+            <div class="nav-toggle" id="navToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="container">
+            <h1><i class="fas fa-calendar-alt"></i> Réserver un Rendez-vous</h1>
+            <p>Prenez rendez-vous en quelques clics</p>
+        </div>
+    </div>
+
+    <!-- Booking Section -->
+    <section class="booking-section">
+        <div class="container">
+            <div class="booking-container">
+                <!-- Progress Steps -->
+                <div class="booking-steps">
+                    <div class="step active" data-step="1">
+                        <div class="step-number">1</div>
+                        <div class="step-label">Choisir la coiffeuse</div>
+                    </div>
+                    <div class="step" data-step="2">
+                        <div class="step-number">2</div>
+                        <div class="step-label">Sélectionner le service</div>
+                    </div>
+                    <div class="step" data-step="3">
+                        <div class="step-number">3</div>
+                        <div class="step-label">Date et heure</div>
+                    </div>
+                    <div class="step" data-step="4">
+                        <div class="step-number">4</div>
+                        <div class="step-label">Confirmation</div>
+                    </div>
+                </div>
+
+                <!-- Booking Form -->
+                <div class="booking-form-container">
+                    <form id="bookingForm" class="booking-form">
+                        <!-- Step 1: Choisir la coiffeuse -->
+                        <div class="form-step active" data-step="1">
+                            <h2>Choisir votre coiffeuse</h2>
+
+                            <div class="search-stylist">
+                                <input type="text" id="stylistSearch" placeholder="Rechercher une coiffeuse par nom...">
+                                <button type="button" class="btn-search">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </div>
+
+                            <div id="stylistsSelection" class="stylists-selection">
+                                <!-- Les coiffeuses disponibles seront chargées ici -->
+                            </div>
+
+                            <div class="form-navigation">
+                                <button type="button" class="btn btn-outline" disabled>
+                                    <i class="fas fa-arrow-left"></i> Précédent
+                                </button>
+                                <button type="button" class="btn btn-primary next-step" disabled id="step1Next">
+                                    Suivant <i class="fas fa-arrow-right"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Step 2: Sélectionner le service -->
+                        <div class="form-step" data-step="2">
+                            <h2>Choisissez votre service</h2>
+
+                            <div class="selected-stylist-info" id="selectedStylistInfo">
+                                <!-- Info de la coiffeuse sélectionnée -->
+                            </div>
+
+                            <div class="service-type-selector">
+                                <label>Type de service :</label>
+                                <div class="radio-group">
+                                    <label class="radio-card">
+                                        <input type="radio" name="serviceType" value="domicile" required>
+                                        <div class="radio-content">
+                                            <i class="fas fa-home"></i>
+                                            <span>À domicile</span>
+                                            <small>La coiffeuse vient chez vous</small>
+                                        </div>
+                                    </label>
+                                    <label class="radio-card">
+                                        <input type="radio" name="serviceType" value="salon">
+                                        <div class="radio-content">
+                                            <i class="fas fa-store"></i>
+                                            <span>En salon</span>
+                                            <small>Vous allez au salon</small>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="address-input" id="addressInput" style="display: none;">
+                                <label>Votre adresse :</label>
+                                <input type="text" id="clientAddress" placeholder="Entrez votre adresse complète...">
+                                <button type="button" class="btn-locate" id="locateAddress">
+                                    <i class="fas fa-map-marker-alt"></i> Utiliser ma position
+                                </button>
+                            </div>
+
+                            <div class="services-selection" id="servicesSelection">
+                                <!-- Les services seront chargés dynamiquement -->
+                            </div>
+
+                            <div class="form-navigation">
+                                <button type="button" class="btn btn-outline prev-step">
+                                    <i class="fas fa-arrow-left"></i> Précédent
+                                </button>
+                                <button type="button" class="btn btn-primary next-step" disabled id="step2Next">
+                                    Suivant <i class="fas fa-arrow-right"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Step 3: Date et heure -->
+                        <div class="form-step" data-step="3">
+                            <h2>Choisissez la date et l'heure</h2>
+
+                            <div class="selected-services-summary" id="selectedServicesSummary">
+                                <!-- Résumé des services sélectionnés -->
+                            </div>
+
+                            <div class="datetime-picker">
+                                <div class="date-selector">
+                                    <label>Date :</label>
+                                    <input type="date" id="appointmentDate" required>
+                                </div>
+
+                                <div class="time-slots" id="timeSlots">
+                                    <label>Horaire disponible :</label>
+                                    <div class="slots-grid">
+                                        <!-- Les créneaux horaires seront générés dynamiquement -->
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="estimated-duration">
+                                <i class="fas fa-clock"></i>
+                                <span>Durée estimée : <strong id="estimatedDuration">2h00</strong></span>
+                            </div>
+
+                            <div class="form-navigation">
+                                <button type="button" class="btn btn-outline prev-step">
+                                    <i class="fas fa-arrow-left"></i> Précédent
+                                </button>
+                                <button type="button" class="btn btn-primary next-step" disabled id="step3Next">
+                                    Suivant <i class="fas fa-arrow-right"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Step 4: Confirmation -->
+                        <div class="form-step" data-step="4">
+                            <h2>Confirmation de votre réservation</h2>
+
+                            <div class="booking-summary">
+                                <div class="summary-section">
+                                    <h3><i class="fas fa-user"></i> Coiffeuse</h3>
+                                    <div id="confirmStylist"></div>
+                                </div>
+
+                                <div class="summary-section">
+                                    <h3><i class="fas fa-cut"></i> Services</h3>
+                                    <div id="confirmServices"></div>
+                                </div>
+
+                                <div class="summary-section">
+                                    <h3><i class="fas fa-calendar"></i> Date et heure</h3>
+                                    <div id="confirmDateTime"></div>
+                                </div>
+
+                                <div class="summary-section">
+                                    <h3><i class="fas fa-map-marker-alt"></i> Lieu</h3>
+                                    <div id="confirmLocation"></div>
+                                </div>
+
+                                <div class="summary-section total">
+                                    <h3>Total</h3>
+                                    <div class="price-total" id="totalPrice">0 €</div>
+                                </div>
+                            </div>
+
+                            <div class="client-info">
+                                <h3>Vos informations</h3>
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <label>Nom complet *</label>
+                                        <input type="text" id="clientName" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Téléphone *</label>
+                                        <input type="tel" id="clientPhone" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Email *</label>
+                                        <input type="email" id="clientEmail" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Commentaires (optionnel)</label>
+                                        <textarea id="clientComments" rows="3" placeholder="Des demandes particulières ?"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="payment-method">
+                                <h3><i class="fas fa-credit-card"></i> Mode de paiement</h3>
+                                <div class="radio-group">
+                                    <label class="radio-option">
+                                        <input type="radio" name="paymentMethod" value="cash" checked>
+                                        <span>Espèces (paiement à la fin de la prestation)</span>
+                                    </label>
+                                    <label class="radio-option">
+                                        <input type="radio" name="paymentMethod" value="card">
+                                        <span>Carte bancaire</span>
+                                    </label>
+                                    <label class="radio-option">
+                                        <input type="radio" name="paymentMethod" value="mobile">
+                                        <span>Paiement mobile (Orange Money, Wave, etc.)</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="terms-acceptance">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="acceptTerms" required>
+                                    <span>J'accepte les <a href="#">conditions générales d'utilisation</a></span>
+                                </label>
+                            </div>
+
+                            <div class="form-navigation">
+                                <button type="button" class="btn btn-outline prev-step">
+                                    <i class="fas fa-arrow-left"></i> Précédent
+                                </button>
+                                <button type="submit" class="btn btn-success" id="confirmBooking">
+                                    <i class="fas fa-check"></i> Confirmer la réservation
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Success Modal -->
+    <div class="modal" id="successModal">
+        <div class="modal-content success">
+            <div class="success-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <h2>Réservation confirmée !</h2>
+            <p>Votre rendez-vous a été enregistré avec succès.</p>
+            <div class="confirmation-details" id="confirmationDetails"></div>
+            <div class="modal-actions">
+                <button class="btn btn-primary" onclick="window.location.href='index.html'">
+                    Retour à l'accueil
+                </button>
+                <button class="btn btn-outline" onclick="window.print()">
+                    <i class="fas fa-print"></i> Imprimer
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3><i class="fas fa-scissors"></i> BeautyConnect</h3>
+                    <p>La plateforme de réservation de coiffure à domicile et en salon</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Liens Rapides</h4>
+                    <ul>
+                        <li><a href="index.html">Accueil</a></li>
+                        <li><a href="coiffeuses.html">Trouver une coiffeuse</a></li>
+                        <li><a href="reservation.html">Réserver</a></li>
+                        <li><a href="index.html#services">Services</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Pour les Coiffeuses</h4>
+                    <ul>
+                        <li><a href="#">Devenir partenaire</a></li>
+                        <li><a href="#">Espace coiffeuse</a></li>
+                        <li><a href="#">Tarifs</a></li>
+                        <li><a href="#">FAQ</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="#">Centre d'aide</a></li>
+                        <li><a href="#">Conditions d'utilisation</a></li>
+                        <li><a href="#">Politique de confidentialité</a></li>
+                        <li><a href="index.html#contact">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 BeautyConnect. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script src="stylists-data.js"></script>
+    <script src="booking.js"></script>
+</body>
+</html>

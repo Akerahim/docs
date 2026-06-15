@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paiement - BeautyConnect</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .payment-container {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .payment-wrapper {
+            max-width: 1200px;
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 2rem;
+        }
+
+        .payment-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+        }
+
+        .payment-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .payment-header h1 {
+            flex: 1;
+            margin: 0;
+            color: var(--dark-color);
+        }
+
+        .secure-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: #d4edda;
+            color: #155724;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            font-size: 0.9rem;
+        }
+
+        .payment-methods {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .payment-method {
+            padding: 1.5rem;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .payment-method:hover {
+            border-color: var(--primary-color);
+            transform: translateY(-3px);
+        }
+
+        .payment-method.active {
+            border-color: var(--primary-color);
+            background: #fff5f8;
+        }
+
+        .payment-method i {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+        }
+
+        .payment-method.paypal i {
+            color: #0070ba;
+        }
+
+        .payment-method.apple i {
+            color: #000;
+        }
+
+        .card-form {
+            display: none;
+        }
+
+        .card-form.active {
+            display: block;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--dark-color);
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .card-visual {
+            background: var(--gradient-primary);
+            padding: 2rem;
+            border-radius: 15px;
+            color: white;
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-visual::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+        }
+
+        .card-chip {
+            width: 50px;
+            height: 40px;
+            background: linear-gradient(135deg, #ffd700, #ffed4e);
+            border-radius: 8px;
+            margin-bottom: 2rem;
+        }
+
+        .card-number {
+            font-size: 1.5rem;
+            letter-spacing: 3px;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-details {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .order-summary {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+            height: fit-content;
+        }
+
+        .summary-header {
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 1.5rem;
+            color: var(--dark-color);
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .summary-item:last-child {
+            border-bottom: none;
+        }
+
+        .summary-label {
+            color: var(--text-light);
+        }
+
+        .summary-value {
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+
+        .total-row {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 2px solid var(--border-color);
+        }
+
+        .total-row .summary-label {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+
+        .total-row .summary-value {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+        }
+
+        .promo-code {
+            margin-top: 1.5rem;
+        }
+
+        .promo-input {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .promo-input input {
+            flex: 1;
+        }
+
+        @media (max-width: 968px) {
+            .payment-wrapper {
+                grid-template-columns: 1fr;
+            }
+
+            .payment-methods {
+                grid-template-columns: 1fr;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="payment-container">
+        <div class="payment-wrapper">
+            <!-- Payment Form -->
+            <div class="payment-card">
+                <div class="payment-header">
+                    <a href="reservation.html" style="color: var(--text-light); font-size: 1.5rem;">
+                        <i class="fas fa-arrow-left"></i>
+                    </a>
+                    <h1>Paiement sécurisé</h1>
+                    <div class="secure-badge">
+                        <i class="fas fa-lock"></i>
+                        <span>Sécurisé</span>
+                    </div>
+                </div>
+
+                <!-- Payment Methods -->
+                <h3 style="margin-bottom: 1rem;">Choisissez votre mode de paiement</h3>
+                <div class="payment-methods">
+                    <div class="payment-method active" onclick="selectPaymentMethod('card')">
+                        <i class="fas fa-credit-card"></i>
+                        <div>Carte bancaire</div>
+                    </div>
+                    <div class="payment-method paypal" onclick="selectPaymentMethod('paypal')">
+                        <i class="fab fa-paypal"></i>
+                        <div>PayPal</div>
+                    </div>
+                    <div class="payment-method apple" onclick="selectPaymentMethod('apple')">
+                        <i class="fab fa-apple-pay"></i>
+                        <div>Apple Pay</div>
+                    </div>
+                </div>
+
+                <!-- Card Payment Form -->
+                <div class="card-form active" id="cardForm">
+                    <div class="card-visual">
+                        <div class="card-chip"></div>
+                        <div class="card-number" id="cardNumberDisplay">**** **** **** ****</div>
+                        <div class="card-details">
+                            <div>
+                                <div style="font-size: 0.8rem; opacity: 0.8;">Titulaire</div>
+                                <div id="cardHolderDisplay">VOTRE NOM</div>
+                            </div>
+                            <div>
+                                <div style="font-size: 0.8rem; opacity: 0.8;">Expire</div>
+                                <div id="cardExpiryDisplay">MM/AA</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <form id="paymentForm">
+                        <div class="form-group">
+                            <label>Numéro de carte</label>
+                            <input type="text" id="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Nom sur la carte</label>
+                            <input type="text" id="cardHolder" placeholder="JEAN DUPONT" required>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Date d'expiration</label>
+                                <input type="text" id="cardExpiry" placeholder="MM/AA" maxlength="5" required>
+                            </div>
+                            <div class="form-group">
+                                <label>CVV</label>
+                                <input type="text" id="cardCVV" placeholder="123" maxlength="3" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                                <input type="checkbox" id="saveCard">
+                                <span>Enregistrer cette carte pour les futurs paiements</span>
+                            </label>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-block" style="padding: 1rem; font-size: 1.1rem; margin-top: 2rem;">
+                            <i class="fas fa-lock"></i> Payer maintenant
+                        </button>
+
+                        <div style="text-align: center; margin-top: 1rem; color: var(--text-light); font-size: 0.9rem;">
+                            <i class="fas fa-shield-alt"></i> Vos informations sont sécurisées et cryptées
+                        </div>
+                    </form>
+                </div>
+
+                <!-- PayPal Form -->
+                <div class="card-form" id="paypalForm">
+                    <div style="text-align: center; padding: 3rem 0;">
+                        <i class="fab fa-paypal" style="font-size: 5rem; color: #0070ba; margin-bottom: 1rem;"></i>
+                        <h3>Paiement via PayPal</h3>
+                        <p style="color: var(--text-light); margin: 1rem 0;">Vous serez redirigé vers PayPal pour finaliser votre paiement</p>
+                        <button class="btn btn-primary" style="background: #0070ba; padding: 1rem 3rem; font-size: 1.1rem;" onclick="processPayPal()">
+                            Continuer avec PayPal
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Apple Pay Form -->
+                <div class="card-form" id="appleForm">
+                    <div style="text-align: center; padding: 3rem 0;">
+                        <i class="fab fa-apple-pay" style="font-size: 5rem; color: #000; margin-bottom: 1rem;"></i>
+                        <h3>Paiement via Apple Pay</h3>
+                        <p style="color: var(--text-light); margin: 1rem 0;">Utilisez Touch ID ou Face ID pour payer</p>
+                        <button class="btn btn-primary" style="background: #000; padding: 1rem 3rem; font-size: 1.1rem;" onclick="processApplePay()">
+                            Payer avec Apple Pay
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Order Summary -->
+            <div class="order-summary">
+                <h2 class="summary-header">Récapitulatif</h2>
+
+                <div class="summary-item">
+                    <span class="summary-label">Box braids</span>
+                    <span class="summary-value">80€</span>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-label">Service à domicile</span>
+                    <span class="summary-value">10€</span>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-label">Sous-total</span>
+                    <span class="summary-value">90€</span>
+                </div>
+
+                <div class="promo-code">
+                    <label style="font-weight: 600; margin-bottom: 0.5rem; display: block;">Code promo</label>
+                    <div class="promo-input">
+                        <input type="text" placeholder="Entrez votre code" style="padding: 10px; border: 2px solid var(--border-color); border-radius: 8px;">
+                        <button class="btn btn-outline">Appliquer</button>
+                    </div>
+                </div>
+
+                <div class="summary-item total-row">
+                    <span class="summary-label">Total à payer</span>
+                    <span class="summary-value">90€</span>
+                </div>
+
+                <div style="margin-top: 2rem; padding: 1rem; background: var(--light-color); border-radius: 10px;">
+                    <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+                        <i class="fas fa-calendar" style="color: var(--primary-color);"></i>
+                        <strong>Rendez-vous</strong>
+                    </div>
+                    <div style="color: var(--text-light);">
+                        Lundi 15 juin 2024 à 14:00<br>
+                        Avec Fatima Diallo
+                    </div>
+                </div>
+
+                <div style="margin-top: 1rem; font-size: 0.85rem; color: var(--text-light); text-align: center;">
+                    En confirmant votre paiement, vous acceptez nos <a href="#" style="color: var(--primary-color);">conditions d'utilisation</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Card number formatting
+        document.getElementById('cardNumber')?.addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\s/g, '');
+            let formattedValue = value.match(/.{1,4}/g)?.join(' ') || value;
+            e.target.value = formattedValue;
+            document.getElementById('cardNumberDisplay').textContent = formattedValue || '**** **** **** ****';
+        });
+
+        // Card holder
+        document.getElementById('cardHolder')?.addEventListener('input', function(e) {
+            document.getElementById('cardHolderDisplay').textContent = e.target.value.toUpperCase() || 'VOTRE NOM';
+        });
+
+        // Card expiry
+        document.getElementById('cardExpiry')?.addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length >= 2) {
+                value = value.slice(0, 2) + '/' + value.slice(2, 4);
+            }
+            e.target.value = value;
+            document.getElementById('cardExpiryDisplay').textContent = value || 'MM/AA';
+        });
+
+        // Payment method selection
+        function selectPaymentMethod(method) {
+            document.querySelectorAll('.payment-method').forEach(m => m.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+
+            document.querySelectorAll('.card-form').forEach(f => f.classList.remove('active'));
+            document.getElementById(method + 'Form').classList.add('active');
+        }
+
+        // Form submission
+        document.getElementById('paymentForm')?.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Simulate payment processing
+            const btn = e.target.querySelector('button[type="submit"]');
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Traitement...';
+            btn.disabled = true;
+
+            setTimeout(() => {
+                window.location.href = 'payment-success.html';
+            }, 2000);
+        });
+
+        function processPayPal() {
+            alert('Redirection vers PayPal...');
+            setTimeout(() => {
+                window.location.href = 'payment-success.html';
+            }, 1000);
+        }
+
+        function processApplePay() {
+            alert('Traitement du paiement Apple Pay...');
+            setTimeout(() => {
+                window.location.href = 'payment-success.html';
+            }, 1000);
+        }
+    </script>
+</body>
+</html>
